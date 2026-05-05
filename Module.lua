@@ -1,4 +1,4 @@
--- Developed by Emerson
+-- By Emerson
 
 local xdev = {}
 local fly = {}
@@ -346,7 +346,7 @@ function fly.new()
 	self._smoothness = 1200
 	self._controlsUpAndDown = {Up = 0, Down = 0}
 	self._usePlatformStand = true
-	self._useKeyBindToggle = true
+	self._useKeyBindToggle = false
 
 	self._keyBindings = {
 		Up = Enum.KeyCode.E,
@@ -356,6 +356,9 @@ function fly.new()
 
 	self.BodyVelocity = Instance.new("BodyVelocity")
 	self.BodyGyro = Instance.new("BodyGyro")
+	
+	self.BodyVelocity.Name = "XDevFlyVelocity"
+	self.BodyGyro.Name = "XDevFlyGyro"
 
 	self.ControlsUpAndDownBeganConn = UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if gameProcessed then return end
