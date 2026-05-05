@@ -1,4 +1,4 @@
--- By Emerson
+-- Developed by Emerson
 
 local xdev = {}
 local fly = {}
@@ -400,8 +400,8 @@ function fly:ApplyAndUpdateGyroAndVelocity()
 	end
 
 	if not self._state then
-		self.BodyVelocity.Parent  = nil
-		self.BodyGyro.Parent = nil
+		self.BodyVelocity:Destroy()
+		self.BodyGyro:Destroy()
 		return
 	end
 
