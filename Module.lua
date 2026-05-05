@@ -400,17 +400,31 @@ function fly:ApplyAndUpdateGyroAndVelocity()
 	end
 
 	if not self._state then
-		self.BodyVelocity:Destroy()
-		self.BodyGyro:Destroy()
+		self.BodyVelocity = nil
+		self.BodyGyro = nil
 		return
 	end
 
 	if self.BodyVelocity and self.BodyVelocity.Parent ~= HumanoidRootPart then
 		self.BodyVelocity.Parent = HumanoidRootPart
+		if typeof(self.BodyVelocity) ~= "Instance" or not self.BodyVelocity:IsA("BodyVelocity") then
+			self.BodyVelocity = Instance.new("BodyVelocity")
+		end
+
+		if typeof(self.BodyGyro) ~= "Instance" or not self.BodyGyro:IsA("BodyGyro") then
+			self.BodyGyro = Instance.new("BodyGyro")
+		end
 	end
 
 	if self.BodyGyro and self.BodyGyro.Parent ~= HumanoidRootPart then
 		self.BodyGyro.Parent = HumanoidRootPart
+		if typeof(self.BodyVelocity) ~= "Instance" or not self.BodyVelocity:IsA("BodyVelocity") then
+			self.BodyVelocity = Instance.new("BodyVelocity")
+		end
+
+		if typeof(self.BodyGyro) ~= "Instance" or not self.BodyGyro:IsA("BodyGyro") then
+			self.BodyGyro = Instance.new("BodyGyro")
+		end
 	end
 end
 
