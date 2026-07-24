@@ -16,9 +16,9 @@ function fly.new()
 	self.CurrentCamera = workspace.CurrentCamera
 	self.Connections = {}
 	
-	self.character = self.LocalPlayer.Character or self.LocalPlayer.CharacterAdded:Wait()
-	self.humanoid = self.character:WaitForChild("Humanoid")
-	self.humanoidRootPart = self.character:WaitForChild("HumanoidRootPart")
+	self.character = nil
+	self.humanoid = nil 
+	self.humanoidRootPart = nil
 	
 	self.BodyVelocity = Instance.new("BodyVelocity")
 	self.BodyGyro = Instance.new("BodyGyro")
@@ -30,11 +30,19 @@ function fly.new()
 	self.Speed = 1
 	self.UsePlatformStand = true
 	
-	self.Connections.CharacterAdded = self.LocalPlayer.CharacterAdded:Connect(function(character)
-		self.character = character
-		self.humanoid = self.character:WaitForChild("Humanoid")
-		self.humanoidRootPart = self.character:WaitForChild("HumanoidRootPart")
+	-- self.Connections.CharacterAdded = self.LocalPlayer.CharacterAdded:Connect(function(character)
+	-- 	self.character = character
+	-- 	self.humanoid = self.character:WaitForChild("Humanoid")
+	-- 	self.humanoidRootPart = self.character:WaitForChild("HumanoidRootPart")
 		
+	-- end)
+
+	task.spawn(function()
+		while self.LocalPlayer.Parent and task.wait() do 
+			self.character = self.LocalPlayer.Character
+			self.humanoid = self.character and self.character:FindFirstChildOfClass("Humanoid")
+			self.humanoidRootPart = self.character and self.character:FindFirstChild("HumanoidRootPart")
+		end
 	end)
 	
 	self.Connections.ControlsInputBegan = self.UserInputService.InputBegan:Connect(function(input, gameProcessed)
@@ -108,7 +116,8 @@ function fly:ApplyAndUpDateBvBg()
 		end
 		return
 	end
-	
+
+	if not self.humanoidRootPart then return end
 	
 	local success, err = pcall(function()
 		self.BodyVelocity.Parent = self.humanoidRootPart
@@ -151,6 +160,8 @@ function fly:Fly(value: boolean?)
 	
 	task.spawn(function()
 		while self.Enabled and task.wait() do
+			if not self.character or not self.humanoid or not self.humanoidRootPart then continue end
+				
 			if self.UsePlatformStand then
 				self.humanoid.PlatformStand = true
 			end
